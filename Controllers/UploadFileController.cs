@@ -1,12 +1,10 @@
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace TestApi2.Controllers
+namespace XLSXReaderAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
