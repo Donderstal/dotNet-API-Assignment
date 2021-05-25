@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using XLSXReaderAPI.Services;
 using Microsoft.OpenApi.Models;
 
 namespace XLSXReaderAPI
@@ -26,12 +26,12 @@ namespace XLSXReaderAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "XLSXReaderAPI", Version = "v1" });
             });
+            services.InitializeServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
