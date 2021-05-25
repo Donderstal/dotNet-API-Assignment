@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using XLSXReaderAPI.Services;
 
 namespace XLSXReaderAPI.Controllers
 {
@@ -11,10 +12,11 @@ namespace XLSXReaderAPI.Controllers
     public class UploadController : ControllerBase
     {
         private readonly ILogger<UploadController> _logger;
-
-        public UploadController(ILogger<UploadController> logger)
+        private readonly XLSXReader _xlsxReader;
+        public UploadController(ILogger<UploadController> logger, XLSXReader xlsxReader )
         {
-            _logger = logger;
+            _logger     = logger;
+            _xlsxReader = xlsxReader;
         }
 
         [HttpPost]
