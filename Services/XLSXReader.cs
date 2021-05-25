@@ -10,24 +10,22 @@ namespace XLSXReaderAPI.Services {
         {
             FileIsSet = false;
         }
-        private void setFileToReader( FileStream file, string filePath )
+        private void setFileToReader( string filePath )
         {
-            XLSXFile = file;
             FilePath = filePath;
             FileIsSet = true; 
         }
         private void unsetFileFromReader( )
         {
-            XLSXFile = null;
             FilePath = null;
             FileIsSet = false; 
         }
-        public Dictionary<string, Dictionary<string, string>> mapExcelFileToDictionary( FileStream file, string filePath ) 
+        public Dictionary<string, Dictionary<string, string>> mapExcelFileToDictionary(string filePath ) 
         {
             Dictionary<string, Dictionary<string, string>> mappedExcelFile = new Dictionary<string, Dictionary<string, string>>( );
 
             unsetFileFromReader( );
-            setFileToReader( file, filePath );
+            setFileToReader( filePath );
 
             return mappedExcelFile;
         }
