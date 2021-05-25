@@ -22,7 +22,7 @@ namespace TestApi2.Controllers
         [HttpPost]
         public async Task<IActionResult> OnPostUploadAsync(IFormFile file)
         {
-            if (file.Length > 0)
+            if (IsProcessableExcelFile(file))
             {
                 var filePath = Path.GetTempFileName();
 
@@ -31,8 +31,28 @@ namespace TestApi2.Controllers
                     await file.CopyToAsync(fileStream);
                 }
             }
+            else {
+                return UnprocessableEntity();
+            }
 
             return Ok();
+        }
+
+        private bool IsProcessableExcelFile(IFormFile file)
+        {
+            string fileExtension = file.FileName.Split('.')[1];
+            if ( file == null ) {
+                return false;
+            }
+            if ( file.Length < 1 )
+            {
+                return false;
+            }
+            if ( fileExtension != "xlsx" )
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
