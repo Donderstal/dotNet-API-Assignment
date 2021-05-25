@@ -29,6 +29,7 @@ namespace XLSXReaderAPI.Controllers
                 using (var fileStream = System.IO.File.Create(filePath))
                 {
                     await file.CopyToAsync(fileStream);
+                    _xlsxReader.mapExcelFileToDictionary( fileStream, filePath );
                 }
             }
             else {
