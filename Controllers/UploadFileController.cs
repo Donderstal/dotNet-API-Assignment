@@ -31,7 +31,7 @@ namespace XLSXReaderAPI.Controllers
                     await file.CopyToAsync(fileStream);
                 }
 
-                _xlsxReader.mapExcelFileToDictionary( filePath );
+                var processedExcel = _xlsxReader.mapExcelFileToDictionary( filePath );
             }
             else {
                 return UnprocessableEntity();

@@ -21,43 +21,63 @@ namespace XLSXReaderAPI.Services {
             FilePath = null;
             FileIsSet = false; 
         }
-        public Dictionary<string, Dictionary<string, string>> mapExcelFileToDictionary(string filePath ) 
+        public Dictionary<string, List<Dictionary<string, string>>> mapExcelFileToDictionary(string filePath ) 
         {
-            Dictionary<string, Dictionary<string, string>> mappedExcelFile = new Dictionary<string, Dictionary<string, string>>( );
+            Dictionary<string, List<Dictionary<string, string>>> mappedExcelFile = new Dictionary<string, List<Dictionary<string, string>>>( );
 
             unsetFileFromReader( );
             setFileToReader( filePath );
 
             return mapExcelSheets( ref mappedExcelFile );
         }
-        public Dictionary<string, Dictionary<string, string>> mapExcelSheets( ref Dictionary<string, Dictionary<string, string>> mappedExcelFile ) 
+        public Dictionary<string, List<Dictionary<string, string>>> mapExcelSheets( ref Dictionary<string, List<Dictionary<string, string>>> mappedExcelFile ) 
         {
             using ( var package = new ExcelPackage( new FileInfo( FilePath )) ) {
                 foreach ( var worksheet in package.Workbook.Worksheets )
                 {
-                    string worksheetKey = worksheet.Name;
-                    mappedExcelFile.Add( worksheetKey, mapExcelTable( worksheet ) );
+                    if ( worksheet.Dimension != null ) {
+                        string worksheetKey = worksheet.Name;
+                        mappedExcelFile.Add( worksheetKey, mapExcelTable( worksheet ) );
+                    }
                 }
             }
             return mappedExcelFile;
         }
 
-        public Dictionary<string, string> mapExcelTable( ExcelWorksheet worksheet )
+        public List<Dictionary<string, string>> mapExcelTable( ExcelWorksheet worksheet )
         {
             List<string> keyList = new List<string>( );
-            Dictionary<string, string> mappedTable = new Dictionary<string, string>( );
+            List<Dictionary<string, string>> mappedTableList = new List<Dictionary<string, string>>();
+            Dictionary<string, string> mappedRow;
 
             int columnsInSheet  = worksheet.Dimension.End.Column;
             int rowsInSheet     = worksheet.Dimension.End.Row;
 
             for (int currentRow = 1; currentRow <= rowsInSheet; currentRow++)
             {
+                mappedRow = new Dictionary<string, string>( );
+
                 for (int currentColumn = 1; currentColumn <= columnsInSheet; currentColumn++)
                 {
-                    // do stuff
+                    if ( currentRow == 1 ) {
+                        keyList.Add( getTrimmedValueFromCell( worksheet, currentRow, currentColumn ) );
+                    }
+                    else {
+                        mappedRow.Add( keyList[currentColumn - 1], getTrimmedValueFromCell( worksheet, currentRow, currentColumn ) );
+                    }
+                }
+
+                if ( currentRow != 1 ) {
+                    mappedTableList.Add(mappedRow);
                 }
             }
-            return mappedTable;
+            return mappedTableList;
+        }
+
+        public string getTrimmedValueFromCell( ExcelWorksheet worksheet, int row, int column ) 
+        {
+            var cell = worksheet.Cells[row, column];
+            return worksheet.Cells[row, column].Value?.ToString().Trim();
         }
     }    
 }
