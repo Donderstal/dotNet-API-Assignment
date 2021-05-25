@@ -22,7 +22,7 @@ namespace XLSXReaderAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> OnPostUploadAsync(IFormFile file)
         {
-            if (IsProcessableExcelFile(file))
+            if ( IsProcessableExcelFile(file) )
             {
                 var filePath = Path.GetTempFileName();
 
@@ -42,7 +42,6 @@ namespace XLSXReaderAPI.Controllers
 
         private bool IsProcessableExcelFile(IFormFile file)
         {
-            string fileExtension = file.FileName.Split('.')[1];
             if ( file == null ) {
                 return false;
             }
@@ -50,6 +49,8 @@ namespace XLSXReaderAPI.Controllers
             {
                 return false;
             }
+
+            string fileExtension = file.FileName.Split('.')[1];
             if ( fileExtension != "xlsx" )
             {
                 return false;

@@ -21,12 +21,12 @@ namespace XLSXReaderAPI.Services {
             FilePath = null;
             FileIsSet = false; 
         }
-        public Dictionary<string, List<Dictionary<string, string>>> mapExcelFileToDictionary(string filePath ) 
+        public Dictionary<string, List<Dictionary<string, string>>> mapExcelFileToDictionary( string filePath ) 
         {
             Dictionary<string, List<Dictionary<string, string>>> mappedExcelFile = new Dictionary<string, List<Dictionary<string, string>>>( );
 
             unsetFileFromReader( );
-            setFileToReader( filePath );
+            setFileToReader( filePath ); 
 
             return mapExcelSheets( ref mappedExcelFile );
         }
@@ -76,7 +76,6 @@ namespace XLSXReaderAPI.Services {
 
         public string getTrimmedValueFromCell( ExcelWorksheet worksheet, int row, int column ) 
         {
-            var cell = worksheet.Cells[row, column];
             return worksheet.Cells[row, column].Value?.ToString().Trim();
         }
     }    
